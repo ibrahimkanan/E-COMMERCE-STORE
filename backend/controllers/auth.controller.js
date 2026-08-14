@@ -137,7 +137,17 @@ export const refreshToken = async (req, res) => {
         });
     } catch (error) {
         console.log("Error in refresh token: ", error);
-        res.status(500).json({ message: "Internal server error" });
+        res.status(500).js on({ message: "Internal server error" });
     }
 };
 
+// get user profile
+export const getUserProfile = async (req, res) => {
+    try {
+        const user = await User.findById(req.user._id).select("-password");
+        res.status(200).json(user);
+    } catch (error) {
+        console.log("Error in get user profile: ", error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+};
