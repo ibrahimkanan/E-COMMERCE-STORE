@@ -1,3 +1,43 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.nav-link {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    color: #1f2937;
+    transition: color 0.2s ease-in-out;
+}
+
+.nav-link:hover {
+    color: #4b5563;
+}
+
+/* CRITICAL: The page background MUST match the neumorphism elements */
+body {
+    background: #e0e0e0;
+}
+
+.neumorphism {
+    border-radius: 14px;
+    background: #e0e0e0;
+    box-shadow: 8px 8px 28px #8d8d8d, -8px -8px 28px #ffffff;
+}
+
+.neumorphism-button {
+    color: #090909;
+    padding: 0.7em 1.7em;
+    font-size: 18px;
+    border-radius: 0.5em;
+    background: #e8e8e8; /* Slightly lighter than the background for contrast */
+    cursor: pointer;
+    border: 1px solid #e8e8e8;
+    transition: all 0.3s;
+    box-shadow: 6px 6px 12px #c5c5c5, -6px -6px 12px #ffffff;
+}
+
+.neumorphism-button:active {
+    color: #666;
+    box-shadow: inset 4px 4px 12px #c5c5c5, inset -4px -4px 12px #ffffff;
+}
