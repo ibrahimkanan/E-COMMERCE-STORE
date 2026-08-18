@@ -1,9 +1,10 @@
 import { ShoppingCart, UserPlus, LogIn, LogOut, Lock } from "lucide-react";
 import { Link } from "react-router-dom";
+import useUserStore from "../store/useUserStore";
 
 const Navbar = () => {
-    const user = true;
-    const isAdmin = true;
+    const { user, logout } = useUserStore();
+    const isAdmin = user?.role === "admin";
     const cart = 3;
 
     return (
@@ -18,12 +19,15 @@ const Navbar = () => {
                     </Link>
 
                     <nav className="flex flex-wrap items-center gap-3">
-                        <Link to={"/"} className="nav-link">
+                        <Link to={"/"} className="nav-link cursor-pointer">
                             Home
                         </Link>
 
                         {user && (
-                            <Link to={"/cart"} className="nav-link relative">
+                            <Link
+                                to={"/cart"}
+                                className="nav-link relative cursor-pointer"
+                            >
                                 <ShoppingCart size={18} />
                                 <span className="hidden sm:inline">Cart</span>
                                 {cart > 0 && (
@@ -47,7 +51,7 @@ const Navbar = () => {
                         {user ? (
                             <button
                                 className="neumorphism-button flex items-center gap-1"
-                                // onClick={logout}
+                                onClick={logout}
                             >
                                 <LogOut size={16} />
                                 <span className="hidden sm:inline">

@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/* CRITICAL: The page background MUST match the neumorphism elements */
 body {
     background: #e0e0e0;
 }
@@ -23,7 +22,7 @@ body {
     cursor: pointer;
     border: 1px solid #e8e8e8;
     transition: all 0.3s;
-    box-shadow: 6px 6px 12px #c5c5c5, -6px -6px 12px #ffffff;
+    box-shadow: 6px 6px 12px #c5c5c5, -2px -2px 6px #ffffff;
 }
 
 .neumorphism-button:hover {
