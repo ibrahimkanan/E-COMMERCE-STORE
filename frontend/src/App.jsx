@@ -1,15 +1,19 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
+
 import HomePage from "./pages/HomePage.jsx";
+import AdminPage from "./pages/AdminPage.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
 import SignupPage from "./pages/SignupPage.jsx";
 
 import LoadingSpinner from "./components/loadingSpinner.jsx";
 import NavBar from "./components/NavBar.jsx";
-import { Toaster } from "react-hot-toast";
-import useUserStore from "./store/useUserStore";
 
 import "./index.css";
+
 import { useEffect } from "react";
+
+import useUserStore from "./store/useUserStore";
 
 function App() {
     const { user, checkAuth, checkingAuth } = useUserStore();
@@ -30,11 +34,17 @@ function App() {
                     <Route path="/" element={<HomePage />} />
                     <Route
                         path="/login"
-                        element={user ? <HomePage /> : <LoginPage />}
+                        element={user ? <Navigate to="/" /> : <LoginPage />}
                     />
                     <Route
                         path="/signup"
-                        element={user ? <HomePage /> : <SignupPage />}
+                        element={user ? <Navigate to="/" /> : <SignupPage />}
+                    />
+                    <Route
+                        path="/secret-dashboard"
+                        element={
+                            user ? <AdminPage /> : <Navigate to="/login" />
+                        }
                     />
                 </Routes>
             </div>

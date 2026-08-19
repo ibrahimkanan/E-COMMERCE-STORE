@@ -29,7 +29,8 @@ body {
     box-shadow: 8px 8px 16px #bebebe, -8px -8px 16px #ffffff;
 }
 
-.neumorphism-button:active {
+.neumorphism-button:active,
+.neumorphism-button.active {
     color: #666;
     box-shadow: inset 4px 4px 12px #c5c5c5, inset -4px -4px 12px #ffffff;
     transform: scale(0.95);
@@ -83,7 +84,7 @@ body {
 /* ===== Neumorphism Input ===== */
 .neumorphism-input {
     width: 100%;
-    padding: 0.65rem 0.85rem 0.65rem 2.5rem;
+    padding: 0.65rem 0.85rem ;
     border-radius: 10px;
     border: none;
     background: #e0e0e0;
@@ -100,4 +101,30 @@ body {
 
 .neumorphism-input:focus {
     box-shadow: inset 4px 4px 8px #ababab, inset -4px -4px 8px #ffffff;
+}
+
+/* ===== Neumorphism Icon Button ===== */
+.neumorphism-icon-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #e0e0e0;
+    border: none;
+    cursor: pointer;
+    box-shadow: 4px 4px 8px #b8b8b8, -4px -4px 8px #ffffff;
+    transition: all 0.25s ease;
+}
+
+.neumorphism-icon-button:hover {
+    box-shadow: 5px 5px 10px #ababab, -5px -5px 10px #ffffff;
+}
+
+.neumorphism-icon-button:active,
+.neumorphism-icon-button.active {
+    box-shadow: inset 3px 3px 6px #b8b8b8, inset -3px -3px 6px #ffffff;
+    transform: scale(0.95);
+    transition: all 0s;
 }

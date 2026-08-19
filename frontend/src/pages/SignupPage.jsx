@@ -66,7 +66,7 @@ const SignUpPage = () => {
                                             name: e.target.value,
                                         })
                                     }
-                                    className="neumorphism-input"
+                                    className="neumorphism-input !pl-10"
                                     placeholder="John Doe"
                                 />
                             </div>
@@ -97,7 +97,7 @@ const SignUpPage = () => {
                                             email: e.target.value,
                                         })
                                     }
-                                    className="neumorphism-input"
+                                    className="neumorphism-input !pl-10"
                                     placeholder="you@example.com"
                                 />
                             </div>
@@ -128,7 +128,7 @@ const SignUpPage = () => {
                                             password: e.target.value,
                                         })
                                     }
-                                    className="neumorphism-input"
+                                    className="neumorphism-input !pl-10"
                                     placeholder="••••••••"
                                 />
                             </div>
@@ -159,7 +159,7 @@ const SignUpPage = () => {
                                             confirmPassword: e.target.value,
                                         })
                                     }
-                                    className="neumorphism-input"
+                                    className="neumorphism-input !pl-10"
                                     placeholder="••••••••"
                                 />
                             </div>

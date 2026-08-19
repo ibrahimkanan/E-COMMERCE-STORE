@@ -56,7 +56,7 @@ const LoginPage = () => {
                                     required
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
-                                    className="neumorphism-input"
+                                    className="neumorphism-input !pl-10"
                                     placeholder="you@example.com"
                                 />
                             </div>
@@ -84,7 +84,7 @@ const LoginPage = () => {
                                     onChange={(e) =>
                                         setPassword(e.target.value)
                                     }
-                                    className="neumorphism-input"
+                                    className="neumorphism-input !pl-10"
                                     placeholder="••••••••"
                                 />
                             </div>
