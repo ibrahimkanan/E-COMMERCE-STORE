@@ -50,7 +50,7 @@ export const createProduct = async (req, res) => {
                 cloudinaryResponse = await cloudinary.uploader.unsigned_upload(
                     image,
                     "products",
-                    { folder: "products" }
+                    { folder: "products" },
                 );
             } catch (uploadError) {
                 console.log("Cloudinary upload failed:", uploadError.message);
@@ -138,7 +138,7 @@ export const getProductsByCategory = async (req, res) => {
     const { category } = req.params;
     try {
         const products = await Product.find({ category });
-        return res.status(200).json(products);
+        return res.status(200).json({ products });
     } catch (error) {
         console.log("Error in getting products by category:", error.message);
         return res.status(500).json({ message: "Internal server error" });
