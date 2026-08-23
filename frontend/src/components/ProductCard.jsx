@@ -3,18 +3,24 @@ import { ShoppingCart } from "lucide-react";
 import { useUserStore } from "../store/useUserStore.js";
 import { useCartStore } from "../store/useCartStore";
 import { motion } from "framer-motion";
+import { useState } from "react";
+import { Loader } from "lucide-react";
 
 const ProductCard = ({ product }) => {
     const { user } = useUserStore();
     const { addToCart } = useCartStore();
-    const handleAddToCart = () => {
+    const [isAdding, setIsAdding] = useState(false);
+
+    const handleAddToCart = async () => {
         if (!user) {
             toast.error("Please login to add products to cart", {
                 id: "cart-error",
             });
             return;
         }
-        addToCart(product);
+        setIsAdding(true);
+        await addToCart(product);
+        setIsAdding(false);
     };
 
     return (
@@ -47,9 +53,14 @@ const ProductCard = ({ product }) => {
                     <button
                         className="flex items-center justify-center w-full neumorphism-button font-medium py-2.5"
                         onClick={handleAddToCart}
+                        disabled={isAdding}
                     >
-                        <ShoppingCart size={22} className="mr-2" />
-                        Add to cart
+                        {isAdding ? (
+                            <Loader size={22} className="mr-2 animate-spin" />
+                        ) : (
+                            <ShoppingCart size={22} className="mr-2" />
+                        )}
+                        {isAdding ? "Adding..." : "Add to cart"}
                     </button>
                 </div>
             </div>

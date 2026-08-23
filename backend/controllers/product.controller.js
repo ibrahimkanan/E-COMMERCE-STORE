@@ -117,6 +117,8 @@ export const getRecommendedProducts = async (req, res) => {
                 $sample: {
                     size: 3,
                 },
+            },
+            {
                 $project: {
                     _id: 1,
                     name: 1,

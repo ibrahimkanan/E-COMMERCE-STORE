@@ -6,8 +6,9 @@ import AdminPage from "./pages/AdminPage.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
 import SignupPage from "./pages/SignupPage.jsx";
 import CategoryPage from "./pages/CategoryPage.jsx";
+import CartPage from "./pages/CartPage.jsx";
 
-import LoadingSpinner from "./components/loadingSpinner.jsx";
+import LoadingSpinner from "./components/LoadingSpinner.jsx";
 import NavBar from "./components/NavBar.jsx";
 
 import "./index.css";
@@ -16,12 +17,20 @@ import { useEffect } from "react";
 
 import useUserStore from "./store/useUserStore";
 
+import { useCartStore } from "./store/useCartStore";
+
 function App() {
     const { user, checkAuth, checkingAuth } = useUserStore();
+    const { getCartItems } = useCartStore();
 
     useEffect(() => {
         checkAuth();
     }, [checkAuth]);
+
+    useEffect(() => {
+        if (!user) return;
+        getCartItems();
+    }, [user, getCartItems]);
 
     if (checkingAuth) {
         return <LoadingSpinner />;
@@ -50,6 +59,10 @@ function App() {
                     <Route
                         path="/category/:category"
                         element={<CategoryPage />}
+                    />
+                    <Route
+                        path="/cart"
+                        element={user ? <CartPage /> : <Navigate to="/login" />}
                     />
                 </Routes>
             </div>
