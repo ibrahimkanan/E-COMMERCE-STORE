@@ -74,9 +74,7 @@ export const useCartStore = create((set, get) => ({
             toast.success("Product removed from cart");
 
             set((prevState) => ({
-                cart: prevState.cart.filter(
-                    (item) => item._id !== productId,
-                ),
+                cart: prevState.cart.filter((item) => item._id !== productId),
             }));
 
             get().calcuteTotal();
@@ -114,5 +112,14 @@ export const useCartStore = create((set, get) => ({
                     "Failed to update product quantity",
             );
         }
+    },
+
+    clearCart: async () => {
+        set({
+            cart: [],
+            total: 0,
+            coupon: null,
+            subtotal: 0,
+        });
     },
 }));

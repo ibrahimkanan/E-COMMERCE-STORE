@@ -128,3 +128,20 @@ body {
     transform: scale(0.95);
     transition: all 0s;
 }
+
+/* ===== Neumorphism Inset Card ===== */
+.neumorphism-inset {
+    border-radius: 12px;
+    background: #e0e0e0;
+    box-shadow: inset 3px 3px 6px #b8b8b8, inset -3px -3px 6px #ffffff;
+}
+
+/* ===== Neumorphism Circle Badge ===== */
+.neumorphism-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #e0e0e0;
+    box-shadow: 5px 5px 12px #b8b8b8, -5px -5px 12px #ffffff;
+}

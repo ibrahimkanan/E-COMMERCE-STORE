@@ -3,19 +3,33 @@ import { useCartStore } from "../store/useCartStore.js";
 import { Link } from "react-router-dom";
 import { MoveRight } from "lucide-react";
 import toast from "react-hot-toast";
+import axios from "../lib/axios.js";
 
 const OrderSummary = () => {
-    const { total, subtotal, coupon, isCouponApplied } = useCartStore();
+    const { total, subtotal, coupon, isCouponApplied, cart } = useCartStore();
 
     const savings = subtotal - total;
     const formattedSubtotal = subtotal.toFixed(2);
     const formattedTotal = total.toFixed(2);
     const formattedSavings = savings.toFixed(2);
 
-    const handlePayment = async (e) => {
-        e.preventDefault();
-        console.log("Payment clicked");
-        toast.success("Payment clicked");
+    const handlePayment = async () => {
+        try {
+            const res = await axios.post("/payments/create-checkout-session", {
+                products: cart,
+                coupon: coupon ? coupon.code : null,
+            });
+
+            const session = res.data;
+            if (session.url) {
+                window.location.href = session.url;
+            } else {
+                toast.error("Failed to create checkout session");
+            }
+        } catch (error) {
+            console.log("From frontend, Error in checkout: ", error);
+            toast.error(error.response?.data?.message || "Checkout failed");
+        }
     };
 
     return (
