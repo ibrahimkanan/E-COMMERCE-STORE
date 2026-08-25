@@ -102,6 +102,7 @@ const createStripeCoupon = async (discountPercentage) => {
 };
 
 const createNewCoupon = async (userId) => {
+    await Coupon.findOneAndDelete({ userId });
     const newCoupon = new Coupon({
         code: "GIFT" + Math.random().toString(36).substring(2, 8).toUpperCase(),
         discountPercentage: 10,
@@ -133,7 +134,9 @@ export const checkoutSuccess = async (req, res) => {
             }
 
             // Check if order already exists to prevent duplicates
-            let existingOrder = await Order.findOne({ stripeSessionId: session.id });
+            let existingOrder = await Order.findOne({
+                stripeSessionId: session.id,
+            });
             if (existingOrder) {
                 return res.status(200).json({
                     success: true,

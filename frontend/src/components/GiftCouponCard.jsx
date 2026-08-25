@@ -1,19 +1,47 @@
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useCartStore } from "../store/useCartStore";
+import toast from "react-hot-toast";
 
 const GiftCouponCard = () => {
     const [userInputCode, setUserInputCode] = useState("");
-    const { coupon, isCouponApplied, removeCoupon } =
+    const { coupon, isCouponApplied, removeCoupon, applyCoupon, getMyCoupon } =
         useCartStore();
 
-    const handleApplyCoupon = () => {
-        console.log("apply coupon");
+    useEffect(() => {
+        getMyCoupon();
+    }, [getMyCoupon]);
+
+    useEffect(() => {
+        if (coupon) {
+            setTimeout(() => {
+                setUserInputCode(coupon.code);
+            }, 1200);
+        }
+    }, [coupon]);
+
+    const handleApplyCoupon = async () => {
+        try {
+            if (!userInputCode) {
+                toast.error("Please enter a coupon code");
+                return;
+            }
+            await applyCoupon(userInputCode);
+            setUserInputCode("");
+        } catch (error) {
+            console.log("Error from handleApplyCoupon: ", error);
+            toast.error(error.response.data.error || "Failed to apply coupon");
+        }
     };
 
     const handleRemoveCoupon = async () => {
-        await removeCoupon();
-        setUserInputCode("");
+        try {
+            await removeCoupon();
+            setUserInputCode("");
+        } catch (error) {
+            console.log("Error from handleRemoveCoupon: ", error);
+            toast.error(error.response.data.error || "Failed to remove coupon");
+        }
     };
 
     return (
