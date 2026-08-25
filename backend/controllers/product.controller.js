@@ -14,13 +14,18 @@ export const getAllProducts = async (req, res) => {
 
 export const getFeaturedProducts = async (req, res) => {
     try {
-        // check redis cache first
-        let featuredProducts = await redis.get("featured_products");
-        if (featuredProducts) {
-            return res.status(200).json(JSON.parse(featuredProducts));
+        let featuredProducts = null;
+        try {
+            // check redis cache first
+            const cachedProducts = await redis.get("featured_products");
+            if (cachedProducts && Array.isArray(cachedProducts)) {
+                return res.status(200).json(cachedProducts);
+            }
+        } catch (redisError) {
+            console.log("Redis get error:", redisError.message);
         }
 
-        // if not found in cache, fetch from database
+        // if not found in cache or redis failed, fetch from database
         featuredProducts = await Product.find({ isFeatured: true }).lean(); //lean returns plain javascript objects instead of mongoose documents
 
         if (!featuredProducts || featuredProducts.length === 0) {
@@ -30,7 +35,11 @@ export const getFeaturedProducts = async (req, res) => {
         }
 
         // store in cache
-        await redis.set("featured_products", JSON.stringify(featuredProducts));
+        try {
+            await redis.set("featured_products", featuredProducts);
+        } catch (redisError) {
+            console.log("Redis set error:", redisError.message);
+        }
 
         return res.status(200).json(featuredProducts);
     } catch (error) {
@@ -171,7 +180,7 @@ const updateFeaturedProductsCache = async () => {
         const featuredProducts = await Product.find({
             isFeatured: true,
         }).lean();
-        await redis.set("featured_products", JSON.stringify(featuredProducts));
+        await redis.set("featured_products", featuredProducts);
     } catch (error) {
         console.log(
             "Error in updating featured products cache:",

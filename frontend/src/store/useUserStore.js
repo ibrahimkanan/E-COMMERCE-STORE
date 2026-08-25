@@ -66,10 +66,24 @@ export const useUserStore = create((set, get) => ({
             const res = await axios.get("/auth/profile");
             set({ user: res.data, checkingAuth: false });
         } catch (error) {
+            set({ checkingAuth: false, user: null });
+            console.log("Error in getting user profile:", error);
+        }
+    },
+
+    refreshToken: async () => {
+        if (get().checkingAuth) return;
+        set({ checkingAuth: true });
+
+        try {
+            const res = await axios.post("/auth/refresh-token");
+            set({ user: res.data.user });
+            return res.data.user;
+        } catch (error) {
+            toast.error("Session expired. Please log in again.");
+            return Promise.reject(error);
+        } finally {
             set({ checkingAuth: false });
-            toast.error(
-                error.response?.data?.message || "Something went wrong",
-            );
         }
     },
 }));
@@ -77,3 +91,38 @@ export const useUserStore = create((set, get) => ({
 export default useUserStore;
 
 // ToDo: implemet the axios interceptors for refreshing the token every 15m
+
+// axios interceptor for token refresh
+
+let refreshPromise = null;
+
+axios.interceptors.response.use(
+    (response) => response,
+    async (error) => {
+        const originalRequest = error.config;
+
+        if (error.response?.status === 401 && !originalRequest._retry) {
+            originalRequest._retry = true;
+
+            try {
+                if (refreshPromise) {
+                    await refreshPromise;
+                    return axios(originalRequest);
+                }
+
+                refreshPromise = useUserStore.getState().refreshToken();
+                await refreshPromise;
+                refreshPromise = null;
+                return axios(originalRequest);
+            } catch (refreshError) {
+                refreshPromise = null;
+                useUserStore.getState().logout();
+                toast.error("Session expired. Please log in again.");
+                window.location.href = "/login";
+                return Promise.reject(refreshError);
+            }
+        }
+
+        return Promise.reject(error);
+    },
+);

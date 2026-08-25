@@ -1,5 +1,5 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-import { Toaster } from "react-hot-toast";
+import { Toaster, useToasterStore, toast } from "react-hot-toast";
 
 import HomePage from "./pages/HomePage.jsx";
 import AdminPage from "./pages/AdminPage.jsx";
@@ -16,14 +16,20 @@ import NavBar from "./components/NavBar.jsx";
 import "./index.css";
 
 import { useEffect } from "react";
-
 import useUserStore from "./store/useUserStore";
-
 import { useCartStore } from "./store/useCartStore";
 
 function App() {
     const { user, checkAuth, checkingAuth } = useUserStore();
     const { getCartItems } = useCartStore();
+    const { toasts } = useToasterStore();
+
+    useEffect(() => {
+        toasts
+            .filter((t) => t.visible)
+            .filter((_, i) => i >= 1)
+            .forEach((t) => toast.dismiss(t.id));
+    }, [toasts]);
 
     useEffect(() => {
         checkAuth();
